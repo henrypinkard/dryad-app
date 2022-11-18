@@ -102,7 +102,7 @@ namespace :dev_ops do
 
   desc 'Kill large memory usage passenger processes'
   task kill_bloated_passengers: :environment do
-    passenger = DevOps::Passenger.new
+    passenger = Tasks::DevOps::Passenger.new
 
     passenger.kill_bloated_pids! unless passenger.items_submitting?
 
@@ -167,7 +167,7 @@ namespace :dev_ops do
       next
     end
 
-    DevOps::DownloadUri.update_from_file(file_path: ARGV[1])
+    Tasks::DevOps::DownloadUri.update_from_file(file_path: ARGV[1])
     puts 'Done'
   end
 
@@ -308,7 +308,7 @@ namespace :dev_ops do
       ezid_client = ::Ezid::Client.new(user: tenant.identifier_service.account, password: tenant.identifier_service.password)
       params = { status: 'unavailable | withdrawn' }
       begin
-        ezid_client.modify_identifier("doi:#{identif_str}", params)
+        ezid_client.modify_identifier("doi:#{identif_str}", **params)
       rescue Ezid::IdentifierNotFoundError
         puts "EZID couldn't find identifier to create a tombstone"
       end
@@ -397,7 +397,7 @@ namespace :dev_ops do
     save_path = Rails.root.join(resource_id.to_s)
     FileUtils.mkdir_p(save_path)
 
-    dl_s3 = DevOps::DownloadS3.new(path: save_path)
+    dl_s3 = Tasks::DevOps::DownloadS3.new(path: save_path)
 
     StashEngine::DataFile.where(resource_id: resource_id).where(file_state: 'created').each_with_index do |data_file, idx|
       puts "#{idx}  #{data_file.upload_file_name}"

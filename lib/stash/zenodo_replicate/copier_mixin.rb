@@ -41,7 +41,7 @@ module Stash
         return if submission_size < 50_000_000_000
 
         raise ZenodoError, "resource #{@resource.id} has over 50GB of content which is being skipped for replication to " \
-              "Zenodo since it's not currently reliable"
+                           "Zenodo since it's not currently reliable"
       end
     end
   end
