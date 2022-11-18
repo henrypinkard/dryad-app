@@ -2,7 +2,19 @@ require 'tmpdir'
 require 'fileutils'
 
 module StashEngine
+  # rubocop:disable Lint/ConstantDefinitionInBlock
   describe Tenant do
+
+      # this rails_root stuff is required when faking Rails like david did and using the mailer since it seems to call it
+      rails_root = Dir.mktmpdir('rails_root')
+      allow(Rails).to receive(:root).and_return(rails_root)
+      allow(Rails).to receive(:application).and_return(OpenStruct.new(default_url_options: { host: 'stash-dev.example.edu' }))
+    end
+
+    after(:each) do
+      TENANT_CONFIG = @tenants
+    end
+    # rubocop:enable Lint/ConstantDefinitionInBlock
 
     def expect_exemplia(tenant) # rubocop:disable Metrics/AbcSize
       expect(tenant.tenant_id).to eq('exemplia')
