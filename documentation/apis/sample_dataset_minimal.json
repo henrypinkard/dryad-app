@@ -1,0 +1,20 @@
+{
+  "title" : "Simple title",
+  "abstract" : "Simple abstract",
+  "authors" : [ 
+    {
+      "firstName" : "Any",
+      "lastName" : "Author",
+      "email" : "author@somewhere.com",
+      "orcid" : "0000-0003-0597-4085",
+      "affiliation" : "Oregon State University",
+      "affiliationROR" : "https://ror.org/00ysfqy60"
+    }
+  ],
+  "funders": [ 
+    {
+      "organization": "Funder of All",
+      "awardNumber": "abc123"
+    }],
+  "fieldOfScience": "Animal and dairy science"
+}

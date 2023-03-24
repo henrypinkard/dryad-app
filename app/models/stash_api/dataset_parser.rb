@@ -148,6 +148,8 @@ module StashApi
     end
 
     def add_author(json_author: author)
+      return unless json_author.is_a?(Hash)
+
       a = StashEngine::Author.new(
         author_first_name: json_author[:firstName],
         author_last_name: json_author[:lastName],
