@@ -44,7 +44,7 @@ gem 'coffee-rails', '~> 5.0'
 gem 'jquery-rails', '~> 4.4.0'
 # gem 'libv8' # I think taken care of as dependency of mini_racer
 # gem 'libv8-node',  '~> 18.16.0.0'
-gem 'mini_racer', '~> 0.8.0'
+gem 'mini_racer', '~> 0.6.3'
 gem 'sassc-rails', '~> 2.1.2' # the default for newer rails, no need for yui and already used by bootstrap or something else
 # gem 'therubyracer', platforms: :ruby # this is very outdated and people say to use mini_racer instead if possible
 gem 'turbolinks'
