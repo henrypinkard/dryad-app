@@ -14,8 +14,8 @@ module Stash
       ZC = Stash::ZenodoReplicate::ZenodoConnection
 
       def initialize(zenodo_config:) # APP_CONFIG.zenodo
-        @pat_token = zenodo_config.access_token
-        @pat_token_id = zenodo_config.application_id.to_s
+        @pat_token = Stash::ZenodoReplicate::ZenodoConnection.access_token
+        @pat_token_id = Stash::ZenodoReplicate::ZenodoConnection.user_id
         @base_url = zenodo_config.base_url
       end
 

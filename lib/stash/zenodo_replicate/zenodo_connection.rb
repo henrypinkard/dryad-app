@@ -113,6 +113,18 @@ module Stash
         state[:access_token]
       end
 
+      def self.user_id
+        state_obj = StashEngine::GlobalState.where(key: 'zenodo_api')&.first
+        state_hsh = state_obj&.state.with_indifferent_access if state_obj&.state.is_a?(Hash)
+
+        if state_hsh.nil? || state_hsh[:expires_at].blank? || state_hsh[:expires_at].to_time < (Time.new + 5.minutes)
+          new_access_token
+          state_obj.reload
+        end
+
+        state_obj&.state['user_id']
+      end
+
       # gets access token from api, stores access token to database, and also returns it
       def self.new_access_token
         # example from zenodo has {"access_token": <token>, "expires_in": <time>} and some other stuff
@@ -126,9 +138,11 @@ module Stash
         raise ZenodoError, "Received #{resp.status} code from zenodo API" if resp.status > 399
 
         json = resp.parse
+
         zen_state = StashEngine::GlobalState.where(key: 'zenodo_api')&.first
         zen_state = StashEngine::GlobalState.create(key: 'zenodo_api') if zen_state.nil?
-        zen_state.update(state: { access_token: json['access_token'], expires_at: (Time.new + json['expires_in'].seconds) })
+        zen_state.update(state: { access_token: json['access_token'], user_id: json['user']['id'],
+                                  expires_at: (Time.new + json['expires_in'].seconds) })
 
         json['access_token']
       end
