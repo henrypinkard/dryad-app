@@ -57,8 +57,16 @@ module Stash
       end
 
       def new_version(deposition_id:)
+        # find if there is an open version already and use that instead of creating a new one
+        latest = ZC.standard_request(:get, "#{ZC.base_url}/api/records/#{deposition_id}/versions/latest", zc_id: @zc_id)
+        if latest[:state] == 'inprogress' && latest[:submitted] != true
+          @deposition_id = latest[:id]
+          @links = latest[:links]
+          return latest
+        end
+
         # a two-step process according to the notes -- newversion and then get the latest draft link out and get that item for editing
-        resp = ZC.standard_request(:post, "#{ZC.base_url}/api/deposit/depositions/#{deposition_id}/actions/newversion",
+        resp = ZC.standard_request(:post, "#{ZC.base_url}/api/deposit/depositions/#{latest[:id]}/actions/newversion",
                                    zc_id: @zc_id)
 
         resp2 = ZC.standard_request(:get, resp[:links][:latest_draft], zc_id: @zc_id)

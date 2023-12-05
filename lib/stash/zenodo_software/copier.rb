@@ -118,7 +118,8 @@ module Stash
 
         # if it's gotten here then we're making file changes, the main case
 
-        if @resp[:state] == 'done' # then create new version
+        # if @resp[:state] == 'done' # then create new version
+        if @resp[:submitted]  # maybe this is better for new zenodo states?
           @resp = @deposit.new_version(deposition_id: @previous_copy.deposition_id)
           # the doi and deposition id have changed, so update
           @copy.reload
